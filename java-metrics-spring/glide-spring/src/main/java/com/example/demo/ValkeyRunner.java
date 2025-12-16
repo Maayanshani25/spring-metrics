@@ -22,7 +22,7 @@ public class ValkeyRunner implements CommandLineRunner {
         String keyPrefix = "key";
         String valuePrefix = "hello-from-glide-";
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             String key = keyPrefix + i;
             String value = valuePrefix + i;
 

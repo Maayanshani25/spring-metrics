@@ -56,10 +56,10 @@
         <dependency>
             <groupId>io.valkey.springframework.data</groupId>
             <artifactId>spring-data-valkey</artifactId>
-            <version>${spring-data-valkey.version}</version>
+            <version>3.5.1</version>  <!-- Change this version if necessary-->
         </dependency>
 
-        <!-- ✅ Valkey GLIDE -->
+        <!-- Valkey GLIDE -->
         <dependency>
             <groupId>io.valkey</groupId>
             <artifactId>valkey-glide</artifactId>

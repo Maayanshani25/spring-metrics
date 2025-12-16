@@ -19,8 +19,11 @@ public class ValkeyConfig {
         // Opentelemetry setup for Glide
         String tracesEndpoint = "http://localhost:4318/v1/traces";
         String metricsEndpoint = "http://localhost:4318/v1/metrics";
+        // String tracesEndpoint = "file:///tmp/sapns.json";
+        // String metricsEndpoint = "file:///tmp/metrics.json";
         int samplePercentage = 10;
-        long flushIntervalMs = 1000L;
+        long flushIntervalMs = 100L;
+
 
         OpenTelemetry.init(
             OpenTelemetryConfig.builder()
@@ -38,8 +41,6 @@ public class ValkeyConfig {
                 .flushIntervalMs(flushIntervalMs) // optional
                 .build()
         );
-        // Same idea as your examples: no-arg constructor,
-        // defaults to localhost:6379 unless configured otherwise.
         return new ValkeyGlideConnectionFactory();
     }
 
