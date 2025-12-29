@@ -22,7 +22,7 @@ public class ValkeyConfig {
         // String tracesEndpoint = "file:///tmp/sapns.json";
         // String metricsEndpoint = "file:///tmp/metrics.json";
         int samplePercentage = 10;
-        long flushIntervalMs = 100L;
+        long flushIntervalMs = 20L;
         
         // Valkey glide client
         String hostAndPort = "clustercfg.disney-test-valkey-7-r5.nra7gl.use1.cache.amazonaws.com:6379";

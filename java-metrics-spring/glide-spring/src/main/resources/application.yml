@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: spring-data-valkey-demo
+
+  docker:
+    compose:
+      lifecycle-management: start-only
+      # If Spring doesn't auto-detect the compose file (common in IDE runs), uncomment:
+      # file: compose.yaml
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+  # Traces over OTLP (HTTP)
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: "http://localhost:4318/v1/traces"
+
+  # Metrics over OTLP (HTTP)
+  otlp:
+    metrics:
+      export:
+        url: "http://localhost:4318/v1/metrics"

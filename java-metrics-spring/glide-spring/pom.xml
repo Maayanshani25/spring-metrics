@@ -73,10 +73,22 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+         <!-- Spring Boot 4 built-in OpenTelemetry starter -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+
+        <!-- Expose Prometheus-compatible metrics at /actuator/prometheus -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
     </dependencies>
 
     <build>
