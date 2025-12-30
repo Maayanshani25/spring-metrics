@@ -15,15 +15,14 @@ processors:
   batch: {}
 
 exporters:
-  # Traces: AWS X-Ray
+  # ---- AWS BACKENDS ----
   awsxray:
     region: "us-east-1"
 
-  # Metrics: CloudWatch (Embedded Metric Format via logs)
   awsemf:
     region: "us-east-1"
-    log_group_name: "/spring/traces"
-    namespace: "opentelemtey"
+    log_group_name: "/aws/otel/traces"
+    namespace: "opentelemtey_tests"
     dimension_rollup_option: "NoDimensionRollup"
 
   # ---- LOCAL DEBUGGING ----
@@ -36,13 +35,23 @@ exporters:
     verbosity: detailed
 
 service:
+  telemetry:
+    logs:
+      level: "debug"
+
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [awsxray, debug]
+      exporters:
+        - awsxray
+        - otlphttp/jaeger
+        - spanmetrics
+        - debug
 
     metrics:
-      receivers: [otlp]
+      receivers: [spanmetrics, otlp]
       processors: [batch]
-      exporters: [awsemf, debug]
+      exporters:
+        - awsemf
+        - debug

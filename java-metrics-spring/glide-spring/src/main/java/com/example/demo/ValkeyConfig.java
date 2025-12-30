@@ -4,6 +4,7 @@ import io.valkey.springframework.data.valkey.connection.ValkeyClusterConfigurati
 import io.valkey.springframework.data.valkey.connection.ValkeyConnectionFactory;
 import io.valkey.springframework.data.valkey.connection.valkeyglide.ValkeyGlideClientConfiguration;
 import io.valkey.springframework.data.valkey.connection.valkeyglide.ValkeyGlideConnectionFactory;
+import io.valkey.springframework.data.valkey.connection.valkeyglide.ValkeyGlideOpenTelemetry;
 import io.valkey.springframework.data.valkey.core.StringValkeyTemplate;
 
 import java.util.List;
@@ -15,15 +16,21 @@ import org.springframework.context.annotation.Configuration;
 public class ValkeyConfig {
 
     @Bean
-    public ValkeyConnectionFactory valkeyConnectionFactory() {
-        // Opentelemetry setup for Glide
-        String tracesEndpoint = "http://localhost:4318/v1/traces";
-        String metricsEndpoint = "http://localhost:4318/v1/metrics";
-        // String tracesEndpoint = "file:///tmp/sapns.json";
-        // String metricsEndpoint = "file:///tmp/metrics.json";
-        int samplePercentage = 10;
-        long flushIntervalMs = 20L;
-        
+    public ValkeyGlideOpenTelemetry valkeyGlideOpenTelemetry() {
+        // Minimal: use defaults (localhost collector, 10% sampling, 1s flush)
+        return ValkeyGlideOpenTelemetry.defaults();
+
+        // OPTIONAL: override defaults (example)
+        // return ValkeyGlideOpenTelemetry.builder()
+        //     .tracesEndpoint("http://localhost:4318/v1/traces")
+        //     .metricsEndpoint("http://localhost:4318/v1/metrics")
+        //     .samplePercentage(10)
+        //     .flushIntervalMs(1000L)
+        //     .build();
+    }
+
+    @Bean
+    public ValkeyConnectionFactory valkeyConnectionFactory(ValkeyGlideOpenTelemetry telemetry) {
         // Valkey glide client
         String hostAndPort = "clustercfg.disney-test-valkey-7-r5.nra7gl.use1.cache.amazonaws.com:6379";
 
@@ -32,12 +39,7 @@ public class ValkeyConfig {
         ValkeyGlideClientConfiguration clientConfig =
             ValkeyGlideClientConfiguration
                 .builder()
-                .useOpenTelemetry(
-                    tracesEndpoint,
-                    metricsEndpoint,
-                    samplePercentage,  // (optional)
-                    flushIntervalMs    //  (optional)
-                )
+                .useOpenTelemetry(telemetry)
                 .useSsl() // keep only if TLS is enabled
                 .build();
 
@@ -46,7 +48,6 @@ public class ValkeyConfig {
 
     @Bean
     public StringValkeyTemplate valkeyTemplate(ValkeyConnectionFactory factory) {
-        // Spring will call afterPropertiesSet() automatically as part of bean lifecycle
         return new StringValkeyTemplate(factory);
     }
 }

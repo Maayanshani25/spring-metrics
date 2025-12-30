@@ -11,7 +11,7 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
     ports:
-      - "4318:4318"   # OTLP HTTP receiver (Spring sends here)
-      - "4317:4317"   # OTLP gRPC receiver (optional)
+      - "4318:4318"   # OTLP HTTP receiver 
+      - "4317:4317"   # OTLP gRPC receiver 
     depends_on:
       - jaeger
