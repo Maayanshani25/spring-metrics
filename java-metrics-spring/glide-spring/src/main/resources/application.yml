@@ -1,19 +1,16 @@
 spring:
   application:
-    name: spring-data-valkey-demo
+    name: spring-data-valkey-OTEL
 
   docker:
     compose:
       lifecycle-management: start-only
-      # If Spring doesn't auto-detect the compose file (common in IDE runs), uncomment:
-      # file: compose.yaml
 
 management:
   tracing:
     sampling:
-      probability: 1.0
+      probability: 1.0 # Means that all spans will be exported.
 
-  # Traces over OTLP (HTTP)
   opentelemetry:
     tracing:
       export:

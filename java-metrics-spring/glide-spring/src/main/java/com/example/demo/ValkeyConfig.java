@@ -18,21 +18,13 @@ import org.springframework.context.annotation.Configuration;
 public class ValkeyConfig {
 
     @Bean
-    public OpenTelemetryForGlide valkeyGlideOpenTelemetry() {
+    public OpenTelemetryForGlide openTelemetryForGlide() {
         return OpenTelemetryForGlide.defaults();
-
-        // OPTIONAL: override defaults (example)
-        // return OpenTelemetryForGlide.builder()
-        //     .tracesEndpoint("http://localhost:4318/v1/traces")
-        //     .metricsEndpoint("http://localhost:4318/v1/metrics")
-        //     .samplePercentage(10)
-        //     .flushIntervalMs(1000L)
-        //     .build();
     }
 
     @Bean
     public ValkeyConnectionFactory valkeyConnectionFactory(
-            OpenTelemetryForGlide telemetry
+            OpenTelemetryForGlide openTelemetryForGlide
     ) {
         String hostAndPort = "clustercfg.disney-test-valkey-7-r5.nra7gl.use1.cache.amazonaws.com:6379";
 
@@ -41,7 +33,7 @@ public class ValkeyConfig {
 
         ValkeyGlideClientConfiguration clientConfig =
                 ValkeyGlideClientConfiguration.builder()
-                        .useOpenTelemetry(telemetry)
+                        .useOpenTelemetry(openTelemetryForGlide)
                         .useSsl() // keep only if TLS is enabled
                         .build();
 
