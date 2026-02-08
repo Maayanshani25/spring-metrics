@@ -22,7 +22,7 @@ public class ValkeyRunner implements CommandLineRunner {
         String keyPrefix = "key";
         String valuePrefix = "hello-from-glide-";
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             String key = keyPrefix + i;
             String value = valuePrefix + i;
 
@@ -30,8 +30,5 @@ public class ValkeyRunner implements CommandLineRunner {
             String readBack = valkeyTemplate.opsForValue().get(key);
             log.info("Iteration {}: Wrote and read back {}={}", i, key, readBack);
         }
-
-        String readBack = valkeyTemplate.opsForValue().get(keyPrefix);
-        log.info("Read from Valkey: {}={}", keyPrefix, readBack);
     }
 }

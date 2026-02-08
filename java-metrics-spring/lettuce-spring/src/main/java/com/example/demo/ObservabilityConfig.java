@@ -34,3 +34,5 @@ public class ObservabilityConfig {
         return new LettuceConnectionFactory(redisConfiguration, clientConfig);
     }
 }
+
+

@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: spring-data-valkey-OTEL
+
+  docker:
+    compose:
+      lifecycle-management: start-only
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # Means that all spans will be exported.
+
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: "http://localhost:4318/v1/traces"
+
+  # Metrics over OTLP (HTTP)
+  otlp:
+    metrics:
+      export:
+        url: "http://localhost:4318/v1/metrics"

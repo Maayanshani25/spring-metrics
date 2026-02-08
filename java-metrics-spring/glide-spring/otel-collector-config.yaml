@@ -1,0 +1,34 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317        # OTLP gRPC endpoint
+      http:
+        endpoint: 0.0.0.0:4318        # OTLP HTTP endpoint (used by Spring Boot)
+
+processors:
+  batch: {}                           # Required for efficient exporting
+
+exporters:
+  awsxray:
+    region: "us-east-1"               # X-Ray traces
+
+  awsemf:
+    region: "us-east-1"
+    log_group_name: "/spring/metrics" # Change to your CloudWatch log group
+    namespace: "opentelemetry"        # CloudWatch metrics namespace
+
+  debug:
+    verbosity: detailed               # Optional: remove in production
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [awsxray, debug]
+
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [awsemf, debug]
